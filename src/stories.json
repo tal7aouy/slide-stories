@@ -1,0 +1,29 @@
+{
+  "stories": [
+    {
+      "username": "Imad",
+      "picture": "https://randomuser.me/api/portraits/men/61.jpg",
+      "images": [{ "url": "images/cat1.png" }, { "url": "images/cat2.png" }]
+    },
+    {
+      "username": "Lora",
+      "picture": "https://randomuser.me/api/portraits/women/1.jpg",
+      "images": [{ "url": "images/cat3.png" }, { "url": "images/cat4.png" }]
+    },
+    {
+      "username": "Victoria",
+      "picture": "https://randomuser.me/api/portraits/women/20.jpg",
+      "images": [{ "url": "images/img1.jpg" }, { "url": "images/img2.jpg" }]
+    },
+    {
+      "username": "JohnDoe",
+      "picture": "https://randomuser.me/api/portraits/men/20.jpg",
+      "images": [
+        { "url": "images/img1.jpg" },
+        { "url": "images/img2.jpg" },
+        { "url": "images/img1.jpg" },
+        { "url": "images/cat2.png" }
+      ]
+    }
+  ]
+}
