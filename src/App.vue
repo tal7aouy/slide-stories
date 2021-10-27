@@ -2,7 +2,7 @@
   <div class="flex flex-col h-screen w-full bg-gray-900">
     <div class="flex flex-row justify-center items-center my-8 h-screen">
       <div
-        v-for="(slide, index) in 6"
+        v-for="(story, index) in stories"
         :key="index"
         class="
           absolute
@@ -23,7 +23,91 @@
         "
         @click="index != indexSelected ? selectSlide(index) : ''"
       >
-        {{ slide }}
+        <div class="bg-cover bg-no-repeat h-full rounded-lg">
+          <div class="h-full">
+            <img :src="story.images[0].url" class="h-full w-full rounded-lg" />
+          </div>
+          <div class="w-full pt-4 absolute top-0" v-if="index == indexSelected">
+            <div class="w-11/12 flex m-auto">
+              <div
+                class="w-full rounded-lg mr-2 relative h-auto"
+                v-for="(elm, index) in story.images.length"
+                :key="index"
+              >
+                <!-- length slide -->
+                <div
+                  class="w-full rounded-lg"
+                  style="
+                    height: 4px;
+                    background-color: rgba(255, 255, 255, 0.35);
+                  "
+                ></div>
+                <!-- end length -->
+                <div
+                  class="w-full rounded-lg"
+                  style="height: 4px; background-color: white"
+                ></div>
+              </div>
+            </div>
+            <div class="flex w-11/12 mt-4 m-auto">
+              <div class="flex justify-start items-center w-1/2">
+                <div style="width: 35px; height: 35px">
+                  <img :src="story.picture" class="rounded-full" />
+                </div>
+                <div class="ml-4">
+                  <p class="text-sm text-white font-semibold">
+                    {{ story.username }}
+                  </p>
+                </div>
+              </div>
+              <div class="flex justify-end items-center w-1/2">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  class="h-5 w-5 cursor-pointer"
+                  viewBox="0 0 20 20"
+                  fill="#ffffff"
+                >
+                  <path
+                    fill-rule="evenodd"
+                    d="M10.293 15.707a1 1 0 010-1.414L14.586 10l-4.293-4.293a1 1 0 111.414-1.414l5 5a1 1 0 010 1.414l-5 5a1 1 0 01-1.414 0z"
+                    clip-rule="evenodd"
+                  />
+                  <path
+                    fill-rule="evenodd"
+                    d="M4.293 15.707a1 1 0 010-1.414L8.586 10 4.293 5.707a1 1 0 011.414-1.414l5 5a1 1 0 010 1.414l-5 5a1 1 0 01-1.414 0z"
+                    clip-rule="evenodd"
+                  />
+                </svg>
+              </div>
+            </div>
+          </div>
+          <div v-else>
+            <div class="absolute top-1/2 left-1/2 z-50">
+              <div class="flex flex-col items-center">
+                <div
+                  style="
+                    width: 50px;
+                    height: 50px;
+                    transform: translate(-50%, -50%) scale(2.5);
+                  "
+                  class="
+                    rounded-full
+                    border-2 border-indigo-400
+                    transition-transform
+                    duration-100
+                  "
+                >
+                  <img :src="story.picture" class="rounded-full" />
+                </div>
+                <div class="mt-2">
+                  <p class="text-sm text-white font-semibold">
+                    {{ story.username }}
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
