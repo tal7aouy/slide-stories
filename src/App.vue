@@ -30,20 +30,35 @@
 </template>
 
 <script>
-import { ref } from 'vue'
+import { onMounted, ref } from 'vue'
+import { axios } from './axios'
 export default {
   name: 'App',
   setup() {
     const indexSelected = ref(0)
     const difference = ref(0)
+    const stories = ref([])
     const selectSlide = (index) => {
       difference.value += indexSelected.value - index
       indexSelected.value = index
     }
+    const fetchStories = async () => {
+      const response = await axios
+        .get('/items')
+        .catch((err) => console.log(err))
+      if (response && response.data) {
+        stories.value = response.data
+      }
+    }
+    onMounted(() => {
+      fetchStories()
+    })
     return {
       difference,
       indexSelected,
       selectSlide,
+      fetchStories,
+      stories,
     }
   },
 }
