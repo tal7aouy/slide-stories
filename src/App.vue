@@ -25,7 +25,14 @@
       >
         <div class="bg-cover bg-no-repeat h-full rounded-lg">
           <div class="h-full">
-            <img :src="story.images[0].url" class="h-full w-full rounded-lg" />
+            <img
+              :src="
+                index == indexSelected
+                  ? story.images[key].url
+                  : story.images[0].url
+              "
+              class="h-full w-full rounded-lg"
+            />
           </div>
           <div class="w-full pt-4 absolute top-0" v-if="index == indexSelected">
             <div class="w-11/12 flex m-auto">
@@ -106,7 +113,49 @@
                 </div>
               </div>
             </div>
+            <div
+              class="absolute inset-0 rounded-lg z-10"
+              style="
+                background: -webkit-gradient(
+                  linear,
+                  left top,
+                  left bottom,
+                  from(rgba(38, 38, 38, 0.6)),
+                  to(rgba(38, 38, 38, 0))
+                );
+              "
+            ></div>
           </div>
+        </div>
+        <div v-if="index == indexSelected" class="absolute top-1/2 -left-11">
+          <i
+            @click="prev(index)"
+            class="
+              fas
+              fa-chevron-circle-left
+              text-gray-500
+              cursor-pointer
+              hover:text-gray-300
+              transition-colors
+              duration-150
+              ease-linear
+            "
+          ></i>
+        </div>
+        <div v-if="index == indexSelected" class="absolute top-1/2 -right-11">
+          <i
+            @click="next(index)"
+            class="
+              fas
+              fa-chevron-circle-right
+              text-gray-500
+              cursor-pointer
+              hover:text-gray-300
+              transition-colors
+              duration-150
+              ease-linear
+            "
+          ></i>
         </div>
       </div>
     </div>
@@ -122,6 +171,7 @@ export default {
     const indexSelected = ref(0)
     const difference = ref(0)
     const stories = ref([])
+    const key = ref(0)
     const selectSlide = (index) => {
       difference.value += indexSelected.value - index
       indexSelected.value = index
@@ -137,15 +187,50 @@ export default {
     onMounted(() => {
       fetchStories()
     })
+    const next = (index) => {
+      if (
+        indexSelected.value >= stories.value.length - 1 &&
+        key.value >= stories.value[indexSelected.value].images.length - 1
+      ) {
+        // Without delay
+        setTimeout(() => {
+          difference.value = 0
+          indexSelected.value = 0
+          key.value = 0
+        })
+      } else if (
+        key.value >=
+        stories.value[indexSelected.value].images.length - 1
+      ) {
+        // Without delay
+        setTimeout(() => {
+          difference.value += index - (index + 1)
+          indexSelected.value++
+          key.value = 0
+        })
+      } else {
+        key.value++
+      }
+    }
+    const prev = () => {
+      key.value--
+    }
     return {
       difference,
       indexSelected,
       selectSlide,
       fetchStories,
       stories,
+      next,
+      prev,
+      key,
     }
   },
 }
 </script>
 
-<style></style>
+<style>
+.fas {
+  font-size: 30px;
+}
+</style>
