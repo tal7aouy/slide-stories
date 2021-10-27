@@ -212,7 +212,17 @@ export default {
         key.value++
       }
     }
-    const prev = () => {
+    const prev = (index) => {
+      if (indexSelected.value <= 0 && key.value <= 0) {
+        key.value = 0
+      } else if (key.value <= 0) {
+        // Without delay
+        setTimeout(() => {
+          difference.value += index - (index - 1)
+          indexSelected.value--
+          key.value = 0
+        })
+      }
       key.value--
     }
     return {
