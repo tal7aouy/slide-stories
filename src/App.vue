@@ -43,7 +43,7 @@
               >
                 <!-- length slide -->
                 <div
-                  class="w-full rounded-lg"
+                  class="absolute w-full rounded-lg"
                   style="
                     height: 4px;
                     background-color: rgba(255, 255, 255, 0.35);
@@ -51,8 +51,15 @@
                 ></div>
                 <!-- end length -->
                 <div
-                  class="w-full rounded-lg"
+                  class="absolute w-full rounded-lg"
                   style="height: 4px; background-color: white"
+                  :style="
+                    index == key
+                      ? `width: ${percent}%`
+                      : key > index
+                      ? `width:100%`
+                      : `width:0%`
+                  "
                 ></div>
               </div>
             </div>
@@ -168,13 +175,23 @@ import { axios } from './axios'
 export default {
   name: 'App',
   setup() {
+    // declaration side
     const indexSelected = ref(0)
     const difference = ref(0)
     const stories = ref([])
     const key = ref(0)
+    // percent story
+    const percent = ref(0)
+    const timer = ref(0)
+    const progress = ref(0)
+    const duration = ref(5000)
+    const interval = ref(0)
+    // ----end declaration
     const selectSlide = (index) => {
       difference.value += indexSelected.value - index
       indexSelected.value = index
+      key.value = 0
+      reset()
     }
     const fetchStories = async () => {
       const response = await axios
@@ -182,11 +199,11 @@ export default {
         .catch((err) => console.log(err))
       if (response && response.data) {
         stories.value = response.data
+        play()
       }
     }
-    onMounted(() => {
-      fetchStories()
-    })
+
+    // next story
     const next = (index) => {
       if (
         indexSelected.value >= stories.value.length - 1 &&
@@ -211,7 +228,9 @@ export default {
       } else {
         key.value++
       }
+      reset()
     }
+    // previous story
     const prev = (index) => {
       if (indexSelected.value <= 0 && key.value <= 0) {
         key.value = 0
@@ -222,9 +241,52 @@ export default {
           indexSelected.value--
           key.value = 0
         })
+      } else {
+        key.value--
       }
-      key.value--
+      reset()
     }
+    const autoPlay = () => {
+      if (
+        indexSelected.value >= stories.value.length - 1 &&
+        key.value >= stories.value[indexSelected.value].images.length - 1
+      ) {
+        difference.value = 0
+        indexSelected.value = 0
+        key.value = 0
+      } else if (
+        key.value >=
+        stories.value[indexSelected.value].images.length - 1
+      ) {
+        difference.value += indexSelected.value - (indexSelected.value + 1)
+        indexSelected.value++
+        key.value = 0
+      } else {
+        key.value++
+      }
+      reset()
+    }
+    const play = () => {
+      timer.value = new Date().getTime()
+      progress.value = setInterval(() => {
+        let time = new Date().getTime()
+        percent.value = Math.floor(
+          (100 * (time - timer.value)) / duration.value
+        )
+      }, duration.value / 100)
+      interval.value = setInterval(autoPlay, duration.value)
+    }
+    // reset play
+    const reset = () => {
+      percent.value = 0
+      clearInterval(interval.value)
+      clearInterval(progress.value)
+      play()
+    }
+    // OnMounted hook
+    onMounted(() => {
+      fetchStories()
+    })
     return {
       difference,
       indexSelected,
@@ -234,6 +296,14 @@ export default {
       next,
       prev,
       key,
+      percent,
+      play,
+      timer,
+      progress,
+      duration,
+      reset,
+      interval,
+      autoPlay,
     }
   },
 }
