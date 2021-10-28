@@ -1,24 +1,22 @@
-# story-slider
+# slide-stories
 
-## Project setup
-```
-npm install
-```
+Slide stories is a Simple project built using Vue.js 3 & tailwind.css
 
-### Compiles and hot-reloads for development
+## Usage
+
+- Just download or clone the repo.
+- cd slide-stories
+- run `npm install`
+- run the **_json-server_** using `json-server db.json --watch --port 3000`
+- run to serve
+
 ```
 npm run serve
+//or
+yarn serve
 ```
 
-### Compiles and minifies for production
-```
-npm run build
-```
+## screenShot
 
-### Lints and fixes files
-```
-npm run lint
-```
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+![Screenshot - Story](/screenshots/1.png)
+![Screenshot - Story](/screenshots/2.png)
