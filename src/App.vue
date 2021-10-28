@@ -77,19 +77,21 @@
               <div class="flex justify-end items-center w-1/2">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
-                  class="h-5 w-5 cursor-pointer"
-                  viewBox="0 0 20 20"
-                  fill="#ffffff"
+                  class="h-6 w-6 cursor-pointer"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="#fff"
+                  @click="isPaused ? playStory() : pauseStory()"
                 >
                   <path
-                    fill-rule="evenodd"
-                    d="M10.293 15.707a1 1 0 010-1.414L14.586 10l-4.293-4.293a1 1 0 111.414-1.414l5 5a1 1 0 010 1.414l-5 5a1 1 0 01-1.414 0z"
-                    clip-rule="evenodd"
+                    v-if="!isPaused"
+                    d="M9 6a1 1 0 0 1 1 1v10a1 1 0 1 1-2 0V7a1 1 0 0 1 1-1zm6 0a1 1 0 0 1 1 1v10a1 1 0 1 1-2 0V7a1 1 0 0 1 1-1z"
+                    fill="#fff"
                   />
                   <path
-                    fill-rule="evenodd"
-                    d="M4.293 15.707a1 1 0 010-1.414L8.586 10 4.293 5.707a1 1 0 011.414-1.414l5 5a1 1 0 010 1.414l-5 5a1 1 0 01-1.414 0z"
-                    clip-rule="evenodd"
+                    v-else
+                    d="M6 6.741c0-1.544 1.674-2.505 3.008-1.728l9.015 5.26c1.323.771 1.323 2.683 0 3.455l-9.015 5.258C7.674 19.764 6 18.803 6 17.26V6.741zM17.015 12L8 6.741V17.26L17.015 12z"
+                    fill="#fff"
                   />
                 </svg>
               </div>
@@ -186,6 +188,9 @@ export default {
     const progress = ref(0)
     const duration = ref(5000)
     const interval = ref(0)
+    const isPaused = ref(false)
+    const newDur = ref(0) // duration
+    const pausePer = ref(0) // pausePercent
     // ----end declaration
     const selectSlide = (index) => {
       difference.value += indexSelected.value - index
@@ -269,18 +274,41 @@ export default {
     const play = () => {
       timer.value = new Date().getTime()
       progress.value = setInterval(() => {
+        // forward
         let time = new Date().getTime()
-        percent.value = Math.floor(
-          (100 * (time - timer.value)) / duration.value
-        )
+        if (newDur.value > 0) {
+          percent.value =
+            pausePer.value +
+            Math.floor((100 * (time - timer.value)) / duration.value)
+        } else {
+          percent.value = Math.floor(
+            (100 * (time - timer.value)) / duration.value
+          )
+        }
       }, duration.value / 100)
-      interval.value = setInterval(autoPlay, duration.value)
+      if (newDur.value > 0) {
+        interval.value = setInterval(autoPlay, newDur.value)
+      } else {
+        interval.value = setInterval(autoPlay, duration.value)
+      }
     }
     // reset play
     const reset = () => {
       percent.value = 0
       clearInterval(interval.value)
       clearInterval(progress.value)
+      play()
+    }
+    const pauseStory = () => {
+      isPaused.value = true
+      pausePer.value = percent.value
+      clearInterval(progress.value)
+      clearInterval(interval.value)
+      // calcul new duration
+      newDur.value = duration.value - (pausePer.value * duration.value) / 100
+    }
+    const playStory = () => {
+      isPaused.value = false
       play()
     }
     // OnMounted hook
@@ -304,6 +332,11 @@ export default {
       reset,
       interval,
       autoPlay,
+      isPaused,
+      pauseStory,
+      playStory,
+      newDur,
+      pausePer,
     }
   },
 }
