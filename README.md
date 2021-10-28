@@ -1,6 +1,6 @@
 # slide-stories
 
-Slide stories is a Simple project built using Vue.js 3 & tailwind.css
+Slide stories is a project built using Vue.js 3 & Tailwind.css.
 
 ## Usage
 
