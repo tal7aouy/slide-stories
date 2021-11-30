@@ -8,15 +8,15 @@ Slide stories is a project built using Vue.js 3 & Tailwind.css.
 - cd slide-stories
 - run `npm install`
 - run to serve
-- 
-## demo
-[demo](https://slidestorie.netlify.app/)
-
 ```
 npm run serve
 //or
 yarn serve
 ```
+
+## demo
+
+[demo](https://slidestorie.netlify.app/)
 
 ## screenShot
 
