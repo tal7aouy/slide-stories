@@ -11,9 +11,7 @@
     "@fortawesome/fontawesome-free": "^5.15.4",
     "@tailwindcss/postcss7-compat": "^2.0.2",
     "autoprefixer": "^9",
-    "axios": "^0.24.0",
     "core-js": "^3.6.5",
-    "json-server": "^0.17.0",
     "postcss": "^7",
     "tailwindcss": "npm:@tailwindcss/postcss7-compat@^2.0.2",
     "vue": "^3.0.0"

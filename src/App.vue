@@ -173,7 +173,7 @@
 
 <script>
 import { onMounted, ref } from 'vue'
-import { axios } from './axios'
+import { data } from './stories'
 export default {
   name: 'App',
   setup() {
@@ -198,14 +198,9 @@ export default {
       key.value = 0
       reset()
     }
-    const fetchStories = async () => {
-      const response = await axios
-        .get('/items')
-        .catch((err) => console.log(err))
-      if (response && response.data) {
-        stories.value = response.data
-        play()
-      }
+    const fetchStories = () => {
+      stories.value = data
+      play()
     }
 
     // next story

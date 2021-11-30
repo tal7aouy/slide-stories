@@ -7,8 +7,9 @@ Slide stories is a project built using Vue.js 3 & Tailwind.css.
 - Just download or clone the repo.
 - cd slide-stories
 - run `npm install`
-- run the **_json-server_** using `json-server db.json --watch --port 3000`
 - run to serve
+
+[demo]()
 
 ```
 npm run serve
